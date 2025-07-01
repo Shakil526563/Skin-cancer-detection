@@ -1,4 +1,4 @@
-# Skin Cancer Detection - JavaScript-Free Django Web Application
+# Skin Cancer Detection -Django Web Application
 
 
 https://github.com/user-attachments/assets/cb563445-9e3e-4080-b6ed-14a66bf0df54
