@@ -1,5 +1,11 @@
 # Skin Cancer Detection - JavaScript-Free Django Web Application
 
+
+https://github.com/user-attachments/assets/cb563445-9e3e-4080-b6ed-14a66bf0df54
+
+
+
+
 ## Overview
 Our project utilizes deep CNNs to extract features from skin cancer images on Kaggle, enhancing classification accuracy. These features are then employed by traditional ML algorithms for effective skin cancer diagnosis. The entire system is deployed seamlessly in Django, providing users with a user-friendly web interface for real-time predictions and early detection.
 
