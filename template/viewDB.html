@@ -1,0 +1,215 @@
+{% extends 'headerPage.html' %}
+
+{% block content %}
+
+<div class="gallery-container">
+    <div class="gallery-header">
+        <h1 class="gallery-title">Image Gallery</h1>
+        <p class="gallery-subtitle">Previously analyzed skin lesion images</p>
+    </div>
+
+    {% if listOfImagesPath %}
+    <div class="image-grid">
+        {% for image_path in listOfImagesPath %}
+        <div class="image-card">
+            <div class="image-wrapper">
+                <img src="{{ image_path }}" alt="Skin lesion image" class="gallery-image">
+                <div class="image-overlay">
+                    <a href="{{ image_path }}" class="view-full" target="_blank">
+                        <i class="fa fa-expand"></i>
+                        View Full Size
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-gallery">
+        <i class="fa fa-images"></i>
+        <h3>No Images Found</h3>
+        <p>Upload and analyze some images to see them here.</p>
+        <a href="/" class="btn-upload">
+            <i class="fa fa-cloud-upload"></i>
+            Upload Image
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .gallery-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .gallery-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .gallery-title {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .gallery-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+    }
+
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 1rem 0;
+    }
+
+    .image-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .image-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .image-wrapper {
+        position: relative;
+        padding-bottom: 75%; /* 4:3 Aspect Ratio */
+        overflow: hidden;
+    }
+
+    .gallery-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .image-card:hover .gallery-image {
+        transform: scale(1.05);
+    }
+
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .image-card:hover .image-overlay {
+        opacity: 1;
+    }
+
+    .view-full {
+        color: white;
+        text-decoration: none;
+        padding: 0.75rem 1.5rem;
+        border: 2px solid white;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .view-full:hover {
+        background: white;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .empty-gallery {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .empty-gallery i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 1rem;
+    }
+
+    .empty-gallery h3 {
+        color: #333;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .empty-gallery p {
+        color: #666;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    .btn-upload {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-upload:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .gallery-title {
+            font-size: 2rem;
+        }
+
+        .image-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .empty-gallery {
+            padding: 3rem 1rem;
+        }
+
+        .empty-gallery i {
+            font-size: 3rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .image-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+</style>
+
+{% endblock %}

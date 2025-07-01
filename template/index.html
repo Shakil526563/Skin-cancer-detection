@@ -1,0 +1,332 @@
+{% extends 'headerPage.html' %}
+
+{% block content %}
+
+<div class="detection-container">
+    <div class="hero-section">
+        <h1 class="hero-title">Skin Cancer Detection</h1>
+        <p class="hero-subtitle">Upload an image to get an AI-powered analysis</p>
+        <div class="score-info">
+            <div class="score-legend">
+                <div class="legend-item benign">
+                    <span class="legend-color"></span>
+                    <span>0 = Benign (Non-cancerous)</span>
+                </div>
+                <div class="legend-item malignant">
+                    <span class="legend-color"></span>
+                    <span>1 = Malignant (Cancerous)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-section">
+        <form method="post" enctype="multipart/form-data" action="predictImage" class="upload-form">
+            {% csrf_token %}
+            <div class="file-upload-wrapper">
+                <input type="file" name="filePath" id="fileInput" class="file-input" accept="image/*" required>
+                <label for="fileInput" class="file-label">
+                    <i class="fa fa-cloud-upload"></i>
+                    <span>Choose Image File</span>
+                    <small>Supported formats: JPG, PNG, GIF</small>
+                </label>
+            </div>
+            <button type="submit" class="btn-analyze">
+                <i class="fa fa-search"></i>
+                Analyze Image
+            </button>
+        </form>
+    </div>
+
+    {% if predictedScore is not None %}
+    <div class="results-section">
+        <h2 class="results-title">Analysis Results</h2>
+        <div class="prediction-result">
+            <div class="score-display {% if predictedScore == 0 %}benign{% else %}malignant{% endif %}">
+                <div class="score-number">{{ predictedScore }}</div>
+                <div class="score-label">
+                    {% if predictedScore == 0 %}
+                        Benign
+                        <small>Non-cancerous</small>
+                    {% else %}
+                        Malignant
+                        <small>Potentially cancerous</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        {% if filePathName %}
+        <div class="image-preview">
+            <h3>Analyzed Image</h3>
+            <img src="{{ filePathName }}" alt="Analyzed skin lesion" class="analyzed-image">
+        </div>
+        {% endif %}
+        
+        <div class="disclaimer">
+            <p><strong>Important:</strong> This is an AI-powered screening tool and should not replace professional medical advice. Please consult with a dermatologist for proper diagnosis and treatment.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .detection-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .hero-section {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 2rem;
+    }
+
+    .score-info {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .score-legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+    }
+
+    .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+    }
+
+    .benign .legend-color {
+        background: #28a745;
+    }
+
+    .malignant .legend-color {
+        background: #dc3545;
+    }
+
+    .upload-section {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .upload-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+    }
+
+    .file-upload-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .file-input {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .file-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        border: 2px dashed #667eea;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    .file-label:hover {
+        border-color: #5a6fd8;
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .file-label i {
+        font-size: 2rem;
+        color: #667eea;
+        margin-bottom: 0.5rem;
+    }
+
+    .file-label span {
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 0.25rem;
+    }
+
+    .file-label small {
+        color: #666;
+        font-size: 0.875rem;
+    }
+
+    .btn-analyze {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-analyze:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .results-section {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+    }
+
+    .results-title {
+        text-align: center;
+        color: #333;
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .prediction-result {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .score-display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        border-radius: 15px;
+        color: white;
+        min-width: 200px;
+    }
+
+    .score-display.benign {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    .score-display.malignant {
+        background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+    }
+
+    .score-number {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .score-label {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+
+    .score-label small {
+        display: block;
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-top: 0.25rem;
+    }
+
+    .image-preview {
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .image-preview h3 {
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .analyzed-image {
+        max-width: 100%;
+        height: auto;
+        max-height: 400px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .disclaimer {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-top: 2rem;
+    }
+
+    .disclaimer p {
+        margin: 0;
+        color: #856404;
+        font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .score-legend {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .upload-section, .results-section {
+            padding: 1.5rem;
+        }
+
+        .file-label {
+            padding: 1.5rem;
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+
+{% endblock %}
