@@ -9,12 +9,10 @@ https://github.com/user-attachments/assets/cb563445-9e3e-4080-b6ed-14a66bf0df54
 ## Overview
 Our project utilizes deep CNNs to extract features from skin cancer images on Kaggle, enhancing classification accuracy. These features are then employed by traditional ML algorithms for effective skin cancer diagnosis. The entire system is deployed seamlessly in Django, providing users with a user-friendly web interface for real-time predictions and early detection.
 
-This Django-based web application has been designed to work entirely with HTML and CSS, removing all JavaScript dependencies while maintaining full functionality and providing a modern, responsive user interface.
 
 ## Features
 - **Deep Learning Integration**: Utilizes deep CNNs to extract features from skin cancer images, enhancing classification accuracy
 - **Hybrid ML Approach**: Combines CNN feature extraction with traditional ML algorithms (XGBoost) for effective diagnosis
-- **JavaScript-Free Design**: Pure HTML/CSS implementation with no JavaScript dependencies
 - **AI-Powered Detection**: Uses XGBoost machine learning model trained on CNN-extracted features for skin lesion classification
 - **Real-Time Predictions**: Upload images and get instant skin cancer classification results with early detection capabilities
 - **Modern UI**: Clean, responsive design with gradient backgrounds and smooth transitions
@@ -55,7 +53,7 @@ This Django-based web application has been designed to work entirely with HTML a
 │   │   ├── bootstrap.min.css
 │   │   ├── font-awesome.min.css
 │   │   └── custom-styles.css # Custom CSS styles
-│   └── js/                  # (Removed - not used)
+│  
 ├── media/                   # Uploaded images
 └── models/                  # ML model files
     └── xgboost_model.joblib
@@ -173,6 +171,4 @@ This project is open source and available under the [MIT License](LICENSE).
 For questions or support, please open an issue in the GitHub repository.
 
 ---
-**Note**: This version has been specifically designed to work without JavaScript while maintaining all functionality and providing an enhanced user experience through modern CSS techniques.
 
-# Django-Skin-Cancer-Detection
